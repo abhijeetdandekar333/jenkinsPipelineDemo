@@ -119,11 +119,8 @@ pipeline {
         stage("Properties") {
             steps {
                 catchError(buildResult: 'FAILURE', stageResult:'FAILURE') {
-                   sh  '''
-                   #!/bin/bash
-                   echo "Server = [${SERVER}]"
-                   echo "Environment = [${ENV}]"
-                   '''
+                   echo "Server = ${SERVER}"
+                   echo "Environment = ${ENV}"
                 }
             }
         }
