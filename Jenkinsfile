@@ -8,7 +8,7 @@ properties ([
     parameters([ 
         [  $class: 'CascadeChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT',
-            description: 'Select options',
+            description: 'Select a choice',
             filterLength: 1,
             filterable: false,
             name: 'SERVER',
@@ -23,7 +23,7 @@ properties ([
                 script: [
                   classpath: [],
                   sandbox: false,
-                  script: '''
+                  script: """
                     if (ENV == 'dev') {
                       return['link for dev environment']
                     } 
@@ -36,7 +36,7 @@ properties ([
                     else if (ENV == 'Prod') {
                       return['link for Prod environment']
                     }
-                  '''.stripIndent()         
+                  """.stripIndent()         
         ]
        ]
       ]
