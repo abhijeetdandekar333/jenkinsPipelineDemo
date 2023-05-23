@@ -1,3 +1,5 @@
+def gv
+
 pipeline {
     agent any
     parameters {
@@ -5,20 +7,23 @@ pipeline {
         choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
         booleanParam(name : 'executeTests', defaultValue: true, description:'')
     }
-    tools {
-        maven "<name>"
-        gradle "<name>"
-        jdk "<name>"
-    }
+//     tools {
+//         maven "<name>"
+//         gradle "<name>"
+//         jdk "<name>"
+//     }
     environment {
         NEW_VERSION = '1.2.0'
-//         SERVER_CREDENTIALS = credentials('server-credentials') one way
+//         SERVER_CREDENTIALS = credentials('server-credentials') // one way
     }
     
     stages {
-        stage("Hello") {
+        stage("init") {
             steps {
-                echo "Hello World"
+                script {
+                    gv = load "script.groovy"
+                }
+                echo "fetching groovy code"
             }
         }
         stage('Build') {
@@ -28,9 +33,10 @@ pipeline {
                 }
             }
             steps {
-            echo "Build"
-            echo "Building version ${NEW_VERSION}"
-            }
+                script{
+            gv.buildApp()
+//             echo "Building version ${NEW_VERSION}"
+                }}
         }
         stage("test") {
             when {
@@ -40,21 +46,27 @@ pipeline {
             }
 //             this stage will only execute if branch name is dev or master
             steps {
-            echo "Testing"
+//             echo "Testing"
+                script{
+                    gv.testApp()
+                }
         }
         }
         stage("Deploy") {
             steps {
-            echo "Deploying"
-                echo "eploying version ${params.VERSION}"
+//             echo "Deploying"
+//                 echo "eploying version ${params.VERSION}"
 //                 echo "Deploying with ${SERVER_CREDENTIALS}" // one way
 //                 sh "${SERVER_CREDENTIALS}"
 //            second way
-            WithCredentials([
-                usernamePassword(credentials: 'server-credentials', usernameVariable: USER, passwordVariable: PWD)
-                ]) {
-                    sh "some script ${USER} ${PWD}"
+                script {
+                gv.deployApp()
                 }
+//             WithCredentials([
+//                 usernamePassword(credentials: 'server-credentials', usernameVariable: USER, passwordVariable: PWD)
+//                 ]) {
+//                     sh "some script ${USER} ${PWD}"
+//                 }
         }
         }
     }
@@ -71,3 +83,7 @@ pipeline {
 // variables
 // tools attribute -> Access build tools for your projects Only three tools available gradle, maven and jdk
 // parameters -> to provide external configuration
+// using external scripts in jenkins -> 
+// script {
+// }
+// above script inside each stage in which we can wriye groovy scrips
