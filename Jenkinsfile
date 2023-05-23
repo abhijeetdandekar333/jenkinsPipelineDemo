@@ -17,12 +17,12 @@ properties ([
                 $class: 'GroovyScript',
                 fallbackScript: [
                   classpath: [],
-                  sandbox: false,
+                  sandbox: true,
                   script: 'return ["ERROR"]'
                 ],
                 script: [
                   classpath: [],
-                  sandbox: false,
+                  sandbox: true,
                   script: """
                     if (ENV == 'dev') {
                       return['link for dev environment']
