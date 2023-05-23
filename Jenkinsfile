@@ -39,11 +39,11 @@ pipeline {
                 }}
         }
         stage("test") {
-            when {
-                expression {
-                    BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
-                }
-            }
+//             when {
+//                 expression {
+//                     BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
+//                 }
+//             }
 //             this stage will only execute if branch name is dev or master
             steps {
 //             echo "Testing"
