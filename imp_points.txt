@@ -1,0 +1,4 @@
+The CascadeChoiceParameter class is a specific type of parameter definition in Jenkins that allows you to define a parameter with cascading dropdown choices. 
+It provides a way to create dynamic lists of choices where the available options depend on the selection of a parent parameter.
+
+catchError() {} -> even if code inside catchError gives error still the jenkins code executes in next stages.
