@@ -1,7 +1,7 @@
 def gv
 
 def getEnv() {
-    return [dev, preProd, Prod, staging]
+    return ["dev", "preProd", "Prod", "staging"]
 }
 
 properties ([
