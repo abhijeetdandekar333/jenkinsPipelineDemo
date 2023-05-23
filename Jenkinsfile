@@ -118,7 +118,7 @@ pipeline {
         }
         stage("checkout") {
             steps {
-                git branch: 'master', credentialsId: 'MyGitHub', url: 'https://github.com/abhijeetdandekar333/jenkins_test_code/blob/master'
+                git branch: 'master', credentialsId: 'MyGitHub', url: 'https://github.com/abhijeetdandekar333/jenkins_test_code.git'
             }
         }
         stage("Properties") {
