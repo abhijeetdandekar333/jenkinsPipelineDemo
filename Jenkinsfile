@@ -1,11 +1,59 @@
 def gv
 
+def getEnv() {
+    return [dev, preProd, Prod, staging]
+}
+
+properties ([
+    parameters([ 
+        [  $class: 'CascadeChoiceParameter',
+            choiceType: 'PT_SINGLE_SELECT',
+            description: 'Select options',
+            filterLength: 1,
+            filterable: false,
+            name: 'SERVER',
+            referencedParameters: 'ENV',
+             script: [
+                $class: 'GroovyScript',
+                fallbackScript: [
+                  classpath: [],
+                  sandbox: false,
+                  script: 'return ["ERROR"]'
+                ],
+                script: [
+                  classpath: [],
+                  sandbox: false,
+                  script: '''
+          // Groovy script to generate choices dynamically
+                  def choices = []
+                    if (ENV == 'dev') {
+                      return['link for dev environment']
+                    } 
+                    else if (ENV == 'staging') {
+                      return['link for staging environment']
+                    } 
+                    else if (ENV == 'preProd') {
+                      return['link for preProd environment']
+                    }
+                    else if (ENV == 'Prod') {
+                      return['link for Prod environment']
+                    }
+                  '''.stripIndent()         
+        ]
+       ]
+    ])
+])
+
+
+
+
 pipeline {
     agent any
     parameters {
 //         string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
         choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
         booleanParam(name : 'executeTests', defaultValue: true, description:'')
+        choice(name: 'ENV', choices: getEnv(), description: 'Select one')
     }
 //     tools {
 //         maven "<name>"
@@ -68,6 +116,14 @@ pipeline {
 //                     sh "some script ${USER} ${PWD}"
 //                 }
         }
+        }
+        stage("Properties") {
+            steps {
+                catchError(buildResult: 'FAILURE', stageResult:'FAILURE') {
+                    echo "Server = [${SERVER}]",
+                        echo "Environment = [${ENV}]"
+                }
+            }
         }
     }
 //     post {
