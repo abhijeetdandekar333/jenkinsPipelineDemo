@@ -24,8 +24,6 @@ properties ([
                   classpath: [],
                   sandbox: false,
                   script: '''
-          // Groovy script to generate choices dynamically
-                  def choices = []
                     if (ENV == 'dev') {
                       return['link for dev environment']
                     } 
