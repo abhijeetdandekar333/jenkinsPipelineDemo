@@ -126,7 +126,7 @@ pipeline {
                 catchError(buildResult: 'FAILURE', stageResult:'FAILURE') {
                    echo "Server = ${SERVER}"
                    echo "Environment = ${ENV}"
-                   sh '''
+                   sh '''#!/bin/bash
                     pwd
                     ls -ltr
                     sudo chmod +x script.sh
