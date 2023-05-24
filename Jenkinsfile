@@ -116,32 +116,15 @@ pipeline {
 //                 }
         }
         }
-        stage("checkout") {
-            steps {
-                git branch: 'master', credentialsId: 'MyGitHub', url: 'https://github.com/abhijeetdandekar333/jenkins_test_code.git'
-            }
-        }
         stage("Properties") {
             steps {
-                catchError(buildResult: 'FAILURE', stageResult:'FAILURE') {
-                   echo "Server = ${SERVER}"
-                   echo "Environment = ${ENV}"
-//                    sh '''#!/bin/bash
-//                     pwd
-//                     ls -ltr
-//                     sudo chmod +x script.sh
-//                     ./script.sh
-//                     if [ "$?" -eq "0" ]
-//                     then
-//                         echo "Script executed"
-//                     else
-//                         echo "Script has bug"
-//                     fi
-//                    '''
+                    echo "environment = ${ENV}"
+                    echo "server = ${SERVER}"
+
                 }
             }
         }
-    }
+    
 //     post {
 //         always {
 //             //
