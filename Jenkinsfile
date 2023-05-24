@@ -1,14 +1,14 @@
 def gv
 
 def getEnv() {
-    return [dev, preProd, Prod, staging]
+    return ["dev", "preProd", "Prod", "staging"]
 }
 
 properties ([
     parameters([ 
         [  $class: 'CascadeChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT',
-            description: 'Select options',
+            description: 'Select a choice',
             filterLength: 1,
             filterable: false,
             name: 'SERVER',
@@ -17,15 +17,13 @@ properties ([
                 $class: 'GroovyScript',
                 fallbackScript: [
                   classpath: [],
-                  sandbox: false,
+                  sandbox: true,
                   script: 'return ["ERROR"]'
                 ],
                 script: [
                   classpath: [],
-                  sandbox: false,
-                  script: '''
-          // Groovy script to generate choices dynamically
-                  def choices = []
+                  sandbox: true,
+                  script: """
                     if (ENV == 'dev') {
                       return['link for dev environment']
                     } 
@@ -38,10 +36,10 @@ properties ([
                     else if (ENV == 'Prod') {
                       return['link for Prod environment']
                     }
-                  '''.stripIndent()         
+                  """.stripIndent()         
         ]
        ]
-        ]
+      ]
     ])
 ])
 
@@ -118,11 +116,28 @@ pipeline {
 //                 }
         }
         }
+        stage("checkout") {
+            steps {
+                git branch: 'master', credentialsId: 'MyGitHub', url: 'https://github.com/abhijeetdandekar333/jenkins_test_code.git'
+            }
+        }
         stage("Properties") {
             steps {
                 catchError(buildResult: 'FAILURE', stageResult:'FAILURE') {
-                    echo "Server = ${SERVER}"
-                    echo "Environment = ${ENV}"
+                   echo "Server = ${SERVER}"
+                   echo "Environment = ${ENV}"
+//                    sh '''#!/bin/bash
+//                     pwd
+//                     ls -ltr
+//                     sudo chmod +x script.sh
+//                     ./script.sh
+//                     if [ "$?" -eq "0" ]
+//                     then
+//                         echo "Script executed"
+//                     else
+//                         echo "Script has bug"
+//                     fi
+//                    '''
                 }
             }
         }
